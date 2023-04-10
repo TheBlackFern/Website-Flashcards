@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "carddeck-website"
+version = "0.1"
+description = "Study project for learning django"
+authors = ["TheBlackFern <doroginin.dv@phystech,edu>"]
+readme = "README.md"
+packages = [{include = "carddeck_website"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
