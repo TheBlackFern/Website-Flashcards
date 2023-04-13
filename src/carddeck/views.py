@@ -1,9 +1,11 @@
 from django.shortcuts import render
-
+from .models import CardGroup
 
 def index(request):
-    return render(request, "pages/main.html", {})
+    groups = CardGroup.objects.all()
+    groups_cards = [(group, group.card_set.all()) for group in groups]
+    return render(request, "pages/main.html", {"groups_cards": groups_cards})
 
 def result(request):
-    result = request.GET["result"]
-    return render(request, "pages/result.html", {"result": result})
+    word, explanation = request.GET["word"], request.GET["explanation"]
+    return render(request, "pages/new_card.html", {"word": word, "explanation": explanation})
