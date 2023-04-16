@@ -1,38 +1,85 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex justify-center p-10 text-red-500 hover:text-white hover:bg-black">
+<div class="flex justify-center p-10 hover:text-white hover:bg-black font-light text-3xl">
   <h1>A place holder for greater things to come</h1>
 </div>
-<div class="flex justify-center">
-  <form action="new_card">
-    Enter your word:
-    <input type="text" name="word" placeholder="Your word"><br>
-    Enter the explanation for the word:
-    <input type="text" name="explanation" placeholder="Word's explanation">
-    <input type="submit" value="Send">
-    <input type="submit"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      value="Send">
-    <input type="submit"
-      class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-      value="Send">
-  </form>
+<form action="new_card">
+  <div class="my-4 flex justify-center">
+    <input name="word"
+      class="px-5 py-2.5 text-center text-xl bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 font-light"
+      placeholder="Your word" required>
+  </div>
+  <div class="my-4 flex justify-center">
+    <input name="explanation"
+      class="text-center px-2 py-2.5 text-xl bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 font-light"
+      placeholder="Word's explanation" required>
+  </div>
+  <div class="mb-4 flex justify-center">
+    <select name="group"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-5 py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      {% for group, _ in groups_cards %}
+      <option> {{group}} </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="flex justify-center">
+    <button type="submit"
+      class="py-2.5 px-5 mr-2 mb-2 text-xl font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Add</button>
+  </div>
+</form>
 </div>
-<div>
-  <ul>
-    {% for group, cards in groups_cards %}
-    <li>
-      "{{group}}" group:
-      <ul>
-        {% for card in cards %}
-        <li>
-          {{card}}
-        </li>
-        {% endfor %}
-      </ul>
-    </li>
+<div class="grid justify-center mb-10">
+  {% for group, cards in groups_cards %}
+  <h1 class="font-light text-xl my-4">"{{group}}" group:</h1>
+  <div class="grid grid-cols-5 gap-x-3 gap-y-3">
+    {% for card in cards %}
+    <div
+      class="relative group grid-row-3 max-w-sm h-36 w-36 p-3 bg-white border border-gray-200 rounded-xl shadow dark:bg-gray-800 dark:border-gray-700">
+      <div>
+        <p class="text-center p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{card.word}}
+        </p>
+        <p class="truncate break-words mb-3 font-normal text-gray-700 dark:text-gray-400">{{card.explanation}}</p>
+      </div>
+      <div class="absolute top-2 right-2 hidden group-hover:block">
+        <button class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+          </svg>
+        </button>
+      </div>
+      <div class="absolute top-2 left-2 hidden group-hover:block">
+        <button class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg></button>
+      </div>
+      <div class="absolute bottom-2 left-2 hidden group-hover:block">
+        <button class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="absolute bottom-2 right-2 hidden group-hover:block">
+        <button class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
     {% endfor %}
-  </ul>
+  </div>
+  {% endfor %}
 </div>
+
+
 {% endblock %}

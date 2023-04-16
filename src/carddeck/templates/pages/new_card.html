@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p class="flex justify-center">Got "{{ word }}, {{ explanation }}" from the entry.</p>
+<p class="flex justify-center">Added "{{ word }}, {{ explanation }}" to the {{group}} group.</p>
+<a href="{% url 'home' %}">Go to main page</a>
 {% endblock %}
