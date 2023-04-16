@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from .models import CardGroup
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import CardGroup, Card
 
 def index(request):
     groups = CardGroup.objects.all()
@@ -12,3 +14,13 @@ def result(request):
     group = CardGroup.objects.get(name=group_name)
     group.card_set.create(word=word, explanation=explanation)
     return render(request, "pages/new_card.html", context)
+
+@csrf_exempt
+def delete_card(request, card_id):
+    if request.method == "POST":
+        card = Card.objects.get(id=card_id)
+        card.delete()
+        return JsonResponse({"status": "ok"})
+    else:
+        return JsonResponse({"status": "error"})
+
