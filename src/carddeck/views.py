@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -8,11 +10,22 @@ def index(request):
     groups_cards = [(group, reversed(group.card_set.all())) for group in groups]
     return render(request, "pages/main.html", {"groups_cards": groups_cards})
 
+def test(request):
+    cards = Card.objects.order_by("?")
+    cards_rand = [(card, bool(random.getrandbits(1))) for card in cards]
+    return render(request, "pages/test.html", {"cards_rand": cards_rand})
+
 def show_groups(request):
     groups = CardGroup.objects.all()
     groups_len = [(group, len(group.card_set.all())) for group in groups]
-    print(groups_len)
-    return render(request, "pages/groups.html", {"groups_len": groups_len})
+    context = {
+        "groups_len": groups_len,
+        "compare_len_0": min(2, len(groups)),
+        "compare_len_1": min(3, len(groups)),
+        "compare_len_2": min(4, len(groups)),
+        "compare_len_3": min(6, len(groups)),
+    }
+    return render(request, "pages/groups.html", context)
 
 def card_added(request):
     word, explanation, group_name = request.GET["word"], request.GET["explanation"], request.GET["group"]
