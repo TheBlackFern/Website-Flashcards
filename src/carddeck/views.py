@@ -1,7 +1,9 @@
 import random
+import json
 
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 from .models import CardGroup, Card
 
@@ -11,19 +13,25 @@ def index(request):
     return render(request, "pages/main.html", {"groups_cards": groups_cards})
 
 def test(request):
-    cards = Card.objects.order_by("?")
-    cards_rand = [(card, bool(random.getrandbits(1))) for card in cards]
-    return render(request, "pages/test.html", {"cards_rand": cards_rand})
+    rands = [bool(random.getrandbits(1)) for _ in range(Card.objects.count())]
+    cards_rand = [(model_to_dict(card), rand) for card, rand 
+                  in zip(Card.objects.order_by("?"), rands)]
+    js_cards_rands = json.dumps(cards_rand)
+    context = {
+        "cards_rand": cards_rand,
+        "js_cards_rands": js_cards_rands,
+    }
+    return render(request, "pages/test.html", context)
 
 def show_groups(request):
     groups = CardGroup.objects.all()
-    groups_len = [(group, len(group.card_set.all())) for group in groups]
+    groups_len = [(group, group.card_set.count()) for group in groups]
     context = {
         "groups_len": groups_len,
-        "compare_len_0": min(2, len(groups)),
-        "compare_len_1": min(3, len(groups)),
-        "compare_len_2": min(4, len(groups)),
-        "compare_len_3": min(6, len(groups)),
+        "compare_len_0": min(2, groups.count()),
+        "compare_len_1": min(3, groups.count()),
+        "compare_len_2": min(4, groups.count()),
+        "compare_len_3": min(6, groups.count()),
     }
     return render(request, "pages/groups.html", context)
 

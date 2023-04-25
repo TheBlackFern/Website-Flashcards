@@ -5,19 +5,71 @@
   <ul>
     {% for card, bool in cards_rand %}
     <li class="text-xl">
-      {% if bool %}
-      {{card.word}}: _____
-      {% else %}
-      _____: {{card.explanation}}
-      {% endif %}
+      <div class="grid grid-flow-col relative gap-y-5 space-x-3">
+        {% if bool %}
+        <p class="w-24 text-right text-blue-200 text-xl">{{card.word}}</p>
+        <p class="text-blue-200 text-xl">:</p>
+        <input id="{{ card.id }}" class="input-info w-60">
+        {% else %}
+        <input id="{{ card.id }}" class="input-info w-24">
+        <p class="text-xl text-blue-200">:</p>
+        <p class="w-60 text-xl text-ellipsis text-blue-200">{{card.explanation}}</p>
+        {% endif %}
+        <div id="tick-{{ card.id }}" class="invisible absolute right-0 text-green-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"
+            class="h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <div id="cross-{{ card.id }}" class="invisible text-rose-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"
+            class="h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+      </div>
     </li>
     {% endfor %}
   </ul>
   <div>
-    <a href="{% url 'home' %}" class="btn w-24 py-2.5 px-5 mr-2 mb-2">
-      Home</a>
+    <button onclick="checkTest()" class="check-btn btn w-24 py-2.5 px-5 mr-2 mb-2">
+      Check</button>
     <a href="{% url 'groups' %}" class="btn w-24 py-2.5 px-5 mr-2 mb-2">
       Groups</a>
+    <a href="{% url 'home' %}" class="btn w-24 py-2.5 px-5 mr-2 mb-2">
+      Home</a>
   </div>
 </div>
+
+
+<script>
+  function checkTest() {
+    var cards_rands = JSON.parse('{{ js_cards_rands|escapejs }}');
+    var elem_val, real_val;
+    for (let i = 0; i < cards_rands.length; i++) {
+      elem_val = document.getElementById(cards_rands[i][0].id).value;
+      if (elem_val === "") {
+        continue
+      }
+      if (cards_rands[i][1] == true) {
+        if (elem_val === cards_rands[i][0].explanation) {
+          document.getElementById("tick-" + cards_rands[i][0].id).style.visibility = "visible";
+          document.getElementById("cross-" + cards_rands[i][0].id).style.visibility = "hidden";
+        } else {
+          document.getElementById("tick-" + cards_rands[i][0].id).style.visibility = "hidden";
+          document.getElementById("cross-" + cards_rands[i][0].id).style.visibility = "visible";
+        }
+      } else {
+        if (elem_val === cards_rands[i][0].word) {
+          document.getElementById("tick-" + cards_rands[i][0].id).style.visibility = "visible";
+          document.getElementById("cross-" + cards_rands[i][0].id).style.visibility = "hidden";
+        } else {
+          document.getElementById("tick-" + cards_rands[i][0].id).style.visibility = "hidden";
+          document.getElementById("cross-" + cards_rands[i][0].id).style.visibility = "visible";
+        }
+      }
+    }
+  }
+</script>
+
 {% endblock %}

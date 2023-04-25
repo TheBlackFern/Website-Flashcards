@@ -7,7 +7,7 @@
   <div class="space-x-2">
     <select name="group" class="input-info w-24 h-12 px-2 py-2.5">
       {% for group, _ in groups_cards %}
-      <option> {{group}} </option>
+      <option class="font-light"> {{group}} </option>
       {% endfor %}
     </select>
     <a href="{% url 'groups' %}" class="btn w-32 px-5 py-2.5">
@@ -18,11 +18,11 @@
     Add Card</button>
 </form>
 </div>
+
 <div class="grid justify-center mb-10">
   {% for group, cards in groups_cards %}
-  <h1 class="font-light text-xl my-4">"{{group}}" group:</h1>
+  <h1 class="font-bold text-xl my-4 text-gray-400">"{{group}}" group:</h1>
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-3 gap-y-3">
-    <!--placeholder card for adding-->
     <div class="add-card card grid place-content-center">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
         class="w-12 h-12">
@@ -89,60 +89,4 @@
     });
   });
 </script>
-
-<script>
-  // Add an event listener to the "add-item" div
-  document.querySelector('.add-card').addEventListener('click', function (event) {
-    // Replace the add-item div with an editable form
-    var form = document.createElement('form');
-    var input = document.createElement('input');
-    input.type = 'text';
-    form.appendChild(input);
-    var okButton = document.createElement('button');
-    okButton.textContent = 'OK';
-    form.appendChild(okButton);
-    event.target.replaceWith(form);
-
-    // Add an event listener to the OK button
-    okButton.addEventListener('click', function (event) {
-      event.preventDefault();
-      // Get the value of the input field
-      var value = input.value;
-
-      // Send an AJAX request to create a new entry in the database
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/create-item/');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          // If the request was successful, add the new div element to the page
-          var item = JSON.parse(xhr.responseText);
-          var div = document.createElement('div');
-          div.id = item.id;
-          div.innerHTML = '<p>' + item.name + '</p><button class="remove-btn">Remove</button>';
-          document.querySelector('.add-card').insertAdjacentElement('beforebegin', div);
-
-          // Add an event listener to the "remove" button
-          var removeButton = div.querySelector('.remove-btn');
-          removeButton.addEventListener('click', function (event) {
-            // Get the ID of the div element
-            var id = event.target.closest('div').id;
-
-            // Remove the div element from the page
-            event.target.closest('div').remove();
-
-            // Send an AJAX request to delete the corresponding entry from the database
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/delete-card/' + id + '/');
-            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-            xhr.send();
-          });
-        }
-      };
-      xhr.send(JSON.stringify({ name: value }));
-    });
-  });
-</script>
-
 {% endblock %}

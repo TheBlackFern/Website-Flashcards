@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 
 <head>
   <meta charset="UTF-8">
@@ -9,11 +9,11 @@
   <title> {% block head_title %}carddeck home{% endblock %}</title>
   {% include "head/css.html" %}
 </head>
-<div class="flex justify-center p-10 hover:text-white hover:bg-black font-light text-3xl">
+<div class="flex justify-center p-10 text-gray-200 hover:text-black hover:bg-gray-50 font-light text-3xl">
   <h1>A place holder for greater things to come</h1>
 </div>
 
-<body>
+<body class="bg-gradient-to-r from-gray-800 to-gray-600">
   {% block content %}{% endblock %}
 </body>
 
