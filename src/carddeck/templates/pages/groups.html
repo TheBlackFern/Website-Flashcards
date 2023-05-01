@@ -17,10 +17,10 @@
     {% for group, len in groups_len %}
     <div id="{{ group.id }}" class="card relative group grid-row-3">
       <div>
-        <p class="card-word text-center p-3">
+        <p class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center p-3">
           {{group.name}}
         </p>
-        <p class="card-group-info text-center p-3 text-2xl">
+        <p class="line-clamp-3 break-words font-bold text-gray-700 dark:text-gray-400 text-center p-3 text-2xl">
           {{len}} cards </p>
       </div>
       <!--edit button-->

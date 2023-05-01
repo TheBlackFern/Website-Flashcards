@@ -36,7 +36,6 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       </button>
-      <!--cancel button-->
       <button id="cncl-{{ group.id }}" class="add-cncl absolute invisible top-2 right-2 text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
@@ -47,8 +46,8 @@
     {% for card in cards %}
     <div id="{{ card.id }}" class="card relative group grid-row-3">
       <div>
-        <p class="card-word">{{card.word}}</p>
-        <p class="card-explanation">
+        <p class="text-center p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{card.word}}</p>
+        <p class="text-center line-clamp-3 break-words font-normal text-gray-700 dark:text-gray-400">
           {{card.explanation}}</p>
       </div>
       <!--edit button-->

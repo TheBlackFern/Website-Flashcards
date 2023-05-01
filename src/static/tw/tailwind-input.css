@@ -6,15 +6,6 @@
     .card {
         @apply h-40 w-40 p-3 bg-white border border-gray-200 rounded-xl shadow dark:bg-gray-800 dark:border-gray-700
     }
-    .card-word {
-        @apply text-center p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white
-    }
-    .card-explanation {
-        @apply text-center line-clamp-3 break-words font-normal text-gray-700 dark:text-gray-400
-    }
-    .card-group-info {
-        @apply text-center line-clamp-3 break-words font-bold text-gray-700 dark:text-gray-400
-    }
     .input-info {
         @apply text-center text-xl bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 font-light
     }
