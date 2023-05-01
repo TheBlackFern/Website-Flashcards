@@ -23,11 +23,26 @@
   {% for group, cards in groups_cards %}
   <h1 class="font-bold text-xl my-4 text-gray-400">"{{group}}" group:</h1>
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-3 gap-y-3">
-    <div class="add-card card grid place-content-center">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
-        class="w-12 h-12">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-      </svg>
+    <div id="{{ group.id }}" class="card relative grid place-content-center">
+      <button id="plus-{{ group.id }}" class="add-card visible">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
+          class="w-12 h-12">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      </button>
+      <button id="conf-{{ group.id }}" class="add-conf absolute invisible top-2 left-2 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </button>
+      <!--cancel button-->
+      <button id="cncl-{{ group.id }}" class="add-cncl absolute invisible top-2 right-2 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
     {% for card in cards %}
     <div id="{{ card.id }}" class="card relative group grid-row-3">
@@ -78,12 +93,31 @@
 </div>
 
 <script>
+  document.querySelectorAll('.add-card').forEach(function (btnPlus) {
+    btnPlus.addEventListener('click', (event) => {
+      let btnConfirm = document.getElementById(`conf-${btnPlus.id.split("-")[1]}`);
+      let btnCancel = document.getElementById(`cncl-${btnPlus.id.split("-")[1]}`);
+      btnPlus.style.display = "none";
+      btnConfirm.style.visibility = "visible";
+      btnCancel.style.visibility = "visible";
+      btnConfirm.addEventListener('click', (event) => {
+        btnPlus.style.display = "block";
+        btnConfirm.style.visibility = "hidden";
+        btnCancel.style.visibility = "hidden";
+      });
+      btnCancel.addEventListener('click', (event) => {
+        btnPlus.style.display = "block";
+        btnConfirm.style.visibility = "hidden";
+        btnCancel.style.visibility = "hidden";
+      });
+    });
+  });
   document.querySelectorAll('.remove-btn').forEach(function (button) {
     button.addEventListener('click', function (event) {
-      var id = event.target.closest('div').id;
+      let id = event.target.closest('div').id;
       event.target.closest('div').remove();
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", '/delete-card/' + id + '/');
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", `/delete-card/${id}/`);
       xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
       xhr.send();
     });

@@ -56,7 +56,7 @@ def delete_card(request, card_id):
         return JsonResponse({"status": "ok"})
     else:
         return JsonResponse({"status": "error"})
-    
+
 @csrf_exempt
 def delete_group(request, group_id):
     if request.method == "POST":
@@ -65,4 +65,3 @@ def delete_group(request, group_id):
         return JsonResponse({"status": "ok"})
     else:
         return JsonResponse({"status": "error"})
-
