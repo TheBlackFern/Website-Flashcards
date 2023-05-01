@@ -1,90 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="new_card" class="my-5 flex flex-col items-center space-y-4">
-  <input name="word" class="input-info w-64 px-2 py-2.5" placeholder="Your word" required>
-  <input name="explanation" class="input-info w-64 px-2 py-2.5" placeholder="Word's explanation" required>
-  <div class="space-x-2">
-    <select name="group" class="input-info w-24 h-12 px-2 py-2.5">
-      {% for group, _ in groups_cards %}
-      <option class="font-light"> {{group}} </option>
-      {% endfor %}
-    </select>
-    <a href="{% url 'groups' %}" class="btn w-32 px-5 py-2.5">
-      Edit Groups
-    </a>
-  </div>
-  <button type="submit" class="btn w-32 py-3">
-    Add Card</button>
-</form>
+<div action="new_card" class="my-5 flex flex-col items-center space-y-4">
+  <a href="{% url 'groups' %}" class="btn w-40 px-5 py-2.5">
+    Edit Groups
+  </a>
 </div>
 
 <div class="grid justify-center mb-10">
   {% for group, cards in groups_cards %}
   <h1 class="font-bold text-xl my-4 text-gray-400">"{{group}}" group:</h1>
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-3 gap-y-3">
-    <div id="{{ group.id }}" class="card relative grid place-content-center">
+    <div id="div-{{ group.id }}" class="card relative grid place-content-center">
       <button id="plus-{{ group.id }}" class="add-card visible">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
           class="w-12 h-12">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
       </button>
-      <button id="conf-{{ group.id }}" class="add-conf absolute invisible top-2 left-2 text-white">
+      <button id="add-conf-{{ group.id }}" class="add-conf absolute invisible top-2 left-2 text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
         </svg>
       </button>
-      <button id="cncl-{{ group.id }}" class="add-cncl absolute invisible top-2 right-2 text-white">
+      <button id="add-cncl-{{ group.id }}" class="add-cncl absolute invisible top-2 right-2 text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
+      <div id="add-form-{{ group.id }}" class="absolute invisible">
+        <input id="add-word-{{ group.id }}" class="absolute top-6 left-10 input-info text-2xl w-20" placeholder="Word"
+          required>
+        <textarea id="add-expl-{{ group.id }}" rows="3" class="absolute mb-6 mt-2 top-16 left-4 left input-info w-32"
+          placeholder="Explanation" required></textarea>
+      </div>
     </div>
     {% for card in cards %}
     <div id="{{ card.id }}" class="card relative group grid-row-3">
-      <div>
-        <p class="text-center p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{card.word}}</p>
-        <p class="text-center line-clamp-3 break-words font-normal text-gray-700 dark:text-gray-400">
-          {{card.explanation}}</p>
+      <p id="word-{{ card.id }}" class="text-center mt-3 p-3 text-2xl font-bold tracking-tight text-gray-900
+          dark:text-white">{{card.word}}</p>
+      <p id="expl-{{ card.id }}"
+        class="text-center line-clamp-3 break-words font-normal px-3 text-gray-700 dark:text-gray-400">
+        {{card.explanation}}</p>
+      <div id="form-{{ card.id }}" class="absolute invisible">
+        <input id="input-word-{{ card.id }}" class="absolute top-6 left-10 input-info text-2xl w-20" placeholder="Word"
+          required>
+        <textarea id="input-expl-{{ card.id }}" rows="3" class="absolute mb-6 mt-2 top-16 left-4 left input-info w-32"
+          placeholder="Explanation" required></textarea>
       </div>
-      <!--edit button-->
-      <div class="absolute top-2 left-2 hidden group-hover:block">
-        <button class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-          </svg>
-        </button>
-      </div>
-      <!--remove button-->
-      <button class="remove-btn absolute top-2 right-2 hidden group-hover:block text-white">
+      <button id="edit-{{ card.id }}" class="edit-btn absolute top-2 left-2 invisible group-hover:visible text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+        </svg>
+      </button>
+      <button class="remove-btn absolute top-2 right-2 invisible group-hover:visible text-white">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
         </svg>
       </button>
-      <!--confirm button-->
-      <div class="absolute bottom-1.5 left-2 hidden group-hover:block">
-        <button class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
-            class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-          </svg></button>
-      </div>
-      <!--cancel button-->
-      <div class="absolute bottom-1.5 right-2 hidden group-hover:block">
-        <button class="text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+      <button id="conf-{{ card.id }}" class="absolute top-2 left-2 invisible dark:bg-gray-800 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </button>
+      <button id="cncl-{{ card.id }}" class="absolute top-2 right-2 invisible dark:bg-gray-800 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
     {% endfor %}
   </div>
@@ -92,33 +83,237 @@
 </div>
 
 <script>
+  function deleteCard(card_id) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", `/delete-card/${card_id}/`);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+    xhr.send();
+  }
+
+  function updateCard(word, explanation, card_id) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/update_card/");
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&card_id=${encodeURIComponent(card_id)}`);
+  }
+
+  function createCard(word, explanation, group_id) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", '/new_card/');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = () => {
+      let response = JSON.parse(xhr.responseText);
+      let addCardDiv = document.getElementById(`div-${group_id}`);
+      console.log(response.id)
+      let newCardDiv = createCardDIV(word, explanation, response.id);
+      addCardDiv.after(newCardDiv);
+    }
+    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&group_id=${encodeURIComponent(group_id)}`);
+  }
+
+  function createCardDIV(word, explanation, card_id) {
+    let mainDiv = document.createElement("div");
+    let inputForm = document.createElement("div");
+    let btnEdit = document.createElement("button");
+    let btnDelete = document.createElement("button");
+    let btnCancel = document.createElement("button");
+    let btnConfirm = document.createElement("button");
+    let currentWord = document.createElement("p");
+    let currentExplanation = document.createElement("p");
+    let inputWord = document.createElement("input");
+    let inputExplanation = document.createElement("textarea");
+
+    mainDiv.className = 'card relative group grid-row-3';
+    mainDiv.id = card_id;
+
+    currentWord.className = "text-center mt-3 p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white";
+    currentWord.id = `word-${card_id}`;
+    currentWord.textContent = word;
+
+    currentExplanation.className = "text-center line-clamp-3 break-words px-3 font-normal text-gray-700 dark:text-gray-400";
+    currentExplanation.id = `expl-${card_id}`;
+    currentExplanation.textContent = explanation;
+
+    inputForm.className = "absolute invisible";
+    inputForm.id = `form-${card_id}`;
+
+    inputWord.className = "absolute top-6 left-10 input-info text-2xl w-20";
+    inputWord.placeholder = "Word";
+    inputWord.id = `input-word-${card_id}`;
+
+    inputExplanation.className = "absolute mb-6 mt-2 top-16 left-4 left input-info w-32";
+    inputExplanation.rows = "3";
+    inputExplanation.id = `input-expl-${card_id}`;
+
+    inputForm.appendChild(inputWord);
+    inputForm.appendChild(inputExplanation);
+
+    btnEdit.className = 'absolute top-2 left-2 invisible group-hover:visible text-white'
+    btnEdit.id = `edit-${card_id}`;
+    btnEdit.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" \
+          stroke="currentColor" class="w-6 h-6"> \
+          <path stroke-linecap="round" stroke-linejoin="round" \
+            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /> \
+        </svg>`;
+
+    btnDelete.className = 'absolute top-2 right-2 invisible group-hover:visible text-white'
+    btnDelete.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" \
+        class="w-6 h-6"> \
+        <path stroke-linecap="round" stroke-linejoin="round" \
+          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /> \
+      </svg>`;
+
+    btnConfirm.className = 'absolute top-2 left-2 invisible dark:bg-gray-800 text-white'
+    btnConfirm.id = `conf-${card_id}`;
+    btnConfirm.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" \
+          class="w-6 h-6"> \
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /> \
+        </svg>`;
+
+    btnCancel.className = 'absolute top-2 right-2 invisible dark:bg-gray-800 text-white'
+    btnCancel.id = `cncl-${card_id}`;
+    btnCancel.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" \
+          stroke="currentColor" class="w-6 h-6"> \
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> \
+        </svg>`;
+
+
+    btnDelete.addEventListener('click', (event) => {
+      mainDiv.remove();
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", `/delete-card/${card_id}/`);
+      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+      xhr.send();
+    });
+
+    btnEdit.addEventListener('click', (event) => {
+      inputWord.value = currentWord.textContent;
+      inputExplanation.value = currentExplanation.textContent.trim();
+      btnConfirm.style.visibility = "visible";
+      btnCancel.style.visibility = "visible";
+      inputForm.style.visibility = "visible";
+      currentWord.style.display = "none";
+      currentExplanation.style.display = "none";
+    });
+
+
+    btnConfirm.addEventListener('click', (event) => {
+      updateCard(inputWord.value, inputExplanation.value, card_id);
+      currentWord.textContent = inputWord.value;
+      currentExplanation.textContent = inputExplanation.value;
+      inputWord.value = "";
+      inputExplanation.value = "";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      inputForm.style.visibility = "hidden";
+      currentWord.style.display = "block";
+      currentExplanation.style.display = "block";
+    });
+
+    btnCancel.addEventListener('click', (event) => {
+      inputWord.value = "";
+      inputExplanation.value = "";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      inputForm.style.visibility = "hidden";
+      currentWord.style.display = "block";
+      currentExplanation.style.display = "block";
+    });
+
+    mainDiv.appendChild(currentWord);
+    mainDiv.appendChild(currentExplanation);
+    mainDiv.appendChild(inputForm);
+    mainDiv.appendChild(btnEdit);
+    mainDiv.appendChild(btnDelete);
+    mainDiv.appendChild(btnConfirm);
+    mainDiv.appendChild(btnCancel);
+    return mainDiv;
+  }
+
   document.querySelectorAll('.add-card').forEach(function (btnPlus) {
+    let currentID = btnPlus.id.split("-")[1];
+    let btnConfirm = document.getElementById(`add-conf-${currentID}`);
+    let btnCancel = document.getElementById(`add-cncl-${currentID}`);
+    let form = document.getElementById(`add-form-${currentID}`);
+    let wordInput = document.getElementById(`add-word-${currentID}`);
+    let explInput = document.getElementById(`add-expl-${currentID}`);
     btnPlus.addEventListener('click', (event) => {
-      let btnConfirm = document.getElementById(`conf-${btnPlus.id.split("-")[1]}`);
-      let btnCancel = document.getElementById(`cncl-${btnPlus.id.split("-")[1]}`);
       btnPlus.style.display = "none";
       btnConfirm.style.visibility = "visible";
       btnCancel.style.visibility = "visible";
-      btnConfirm.addEventListener('click', (event) => {
-        btnPlus.style.display = "block";
-        btnConfirm.style.visibility = "hidden";
-        btnCancel.style.visibility = "hidden";
-      });
-      btnCancel.addEventListener('click', (event) => {
-        btnPlus.style.display = "block";
-        btnConfirm.style.visibility = "hidden";
-        btnCancel.style.visibility = "hidden";
-      });
+      form.style.visibility = "visible";
+      wordInput.value = "";
+      explInput.value = "";
+    });
+    btnConfirm.addEventListener('click', (event) => {
+      let word = wordInput.value;
+      let explanation = explInput.value;
+
+      createCard(word, explanation, currentID);
+
+      wordInput.value = "";
+      explInput.value = "";
+      btnPlus.style.display = "block";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      form.style.visibility = "hidden";
+    });
+    btnCancel.addEventListener('click', (event) => {
+      wordInput.value = "";
+      explInput.value = "";
+      btnPlus.style.display = "block";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      form.style.visibility = "hidden";
     });
   });
-  document.querySelectorAll('.remove-btn').forEach(function (button) {
-    button.addEventListener('click', function (event) {
+
+  document.querySelectorAll('.edit-btn').forEach((editButton) => {
+    let currentID = editButton.id.split('-')[1];
+    let btnConfirm = document.getElementById(`conf-${currentID}`);
+    let btnCancel = document.getElementById(`cncl-${currentID}`);
+    let inputForm = document.getElementById(`form-${currentID}`);
+    let inputWord = document.getElementById(`input-word-${currentID}`);
+    let inputExplanation = document.getElementById(`input-expl-${currentID}`);
+    let currentWord = document.getElementById(`word-${currentID}`);
+    let currentExplanation = document.getElementById(`expl-${currentID}`);
+    editButton.addEventListener('click', (event) => {
+      inputWord.value = currentWord.textContent;
+      inputExplanation.value = currentExplanation.textContent.trim();
+      btnConfirm.style.visibility = "visible";
+      btnCancel.style.visibility = "visible";
+      inputForm.style.visibility = "visible";
+      currentWord.style.display = "none";
+      currentExplanation.style.display = "none";
+    });
+    btnConfirm.addEventListener('click', (event) => {
+      updateCard(inputWord.value, inputExplanation.value, currentID);
+      currentWord.textContent = inputWord.value;
+      currentExplanation.textContent = inputExplanation.value;
+      inputWord.value = "";
+      inputExplanation.value = "";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      inputForm.style.visibility = "hidden";
+      currentWord.style.display = "block";
+      currentExplanation.style.display = "block";
+    });
+    btnCancel.addEventListener('click', (event) => {
+      inputWord.value = "";
+      inputExplanation.value = "";
+      btnConfirm.style.visibility = "hidden";
+      btnCancel.style.visibility = "hidden";
+      inputForm.style.visibility = "hidden";
+      currentWord.style.display = "block";
+      currentExplanation.style.display = "block";
+    });
+  });
+
+  document.querySelectorAll('.remove-btn').forEach((button) => {
+    button.addEventListener('click', (event) => {
       let id = event.target.closest('div').id;
       event.target.closest('div').remove();
-      let xhr = new XMLHttpRequest();
-      xhr.open("POST", `/delete-card/${id}/`);
-      xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-      xhr.send();
+      deleteCard(id);
     });
   });
 </script>

@@ -35,18 +35,32 @@ def show_groups(request):
     }
     return render(request, "pages/groups.html", context)
 
-def card_added(request):
-    word, explanation, group_name = request.GET["word"], request.GET["explanation"], request.GET["group"]
-    context = {"word": word, "explanation": explanation, "group": group_name}
-    group = CardGroup.objects.get(name=group_name)
-    group.card_set.create(word=word, explanation=explanation)
-    return render(request, "pages/new_card.html", context)
-
 def group_added(request):
     group_name = request.GET["group_name"]
     context = {"group_name": group_name}
     CardGroup.objects.create(name=group_name)
     return render(request, "pages/new_group.html", context)
+
+@csrf_exempt
+def add_card(request):
+    word = request.POST.get("word")
+    explanation = request.POST.get("explanation")
+    group_id = request.POST.get("group_id")
+    group = CardGroup.objects.get(id=group_id)
+    card = group.card_set.create(word=word, explanation=explanation)
+    response = {'id': card.id}
+    return JsonResponse(response)
+
+@csrf_exempt
+def update_card(request):
+    word = request.POST.get("word")
+    explanation = request.POST.get("explanation")
+    card_id = request.POST.get("card_id")
+    card = Card.objects.get(id=card_id)
+    card.word = word
+    card.explanation = explanation
+    card.save()
+    return JsonResponse({'status': 'ok'})
 
 @csrf_exempt
 def delete_card(request, card_id):
