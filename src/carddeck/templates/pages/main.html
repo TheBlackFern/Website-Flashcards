@@ -220,6 +220,20 @@
       currentExplanation.style.display = "block";
     });
 
+    inputWord.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
+    });
+
+    inputExplanation.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
+    });
+
     mainDiv.appendChild(currentWord);
     mainDiv.appendChild(currentExplanation);
     mainDiv.appendChild(inputForm);
@@ -235,37 +249,55 @@
     let btnConfirm = document.getElementById(`add-conf-${currentID}`);
     let btnCancel = document.getElementById(`add-cncl-${currentID}`);
     let form = document.getElementById(`add-form-${currentID}`);
-    let wordInput = document.getElementById(`add-word-${currentID}`);
-    let explInput = document.getElementById(`add-expl-${currentID}`);
+    let inputWord = document.getElementById(`add-word-${currentID}`);
+    let inputExplanation = document.getElementById(`add-expl-${currentID}`);
+
     btnPlus.addEventListener('click', (event) => {
       btnPlus.style.display = "none";
       btnConfirm.style.visibility = "visible";
       btnCancel.style.visibility = "visible";
       form.style.visibility = "visible";
-      wordInput.value = "";
-      explInput.value = "";
+      inputWord.value = "";
+      inputExplanation.value = "";
     });
+
     btnConfirm.addEventListener('click', (event) => {
-      let word = wordInput.value;
-      let explanation = explInput.value;
+      let word = inputWord.value;
+      let explanation = inputExplanation.value;
 
       createCard(word, explanation, currentID);
 
-      wordInput.value = "";
-      explInput.value = "";
+      inputWord.value = "";
+      inputExplanation.value = "";
       btnPlus.style.display = "block";
       btnConfirm.style.visibility = "hidden";
       btnCancel.style.visibility = "hidden";
       form.style.visibility = "hidden";
     });
+
     btnCancel.addEventListener('click', (event) => {
-      wordInput.value = "";
-      explInput.value = "";
+      inputWord.value = "";
+      inputExplanation.value = "";
       btnPlus.style.display = "block";
       btnConfirm.style.visibility = "hidden";
       btnCancel.style.visibility = "hidden";
       form.style.visibility = "hidden";
     });
+
+    inputWord.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
+    });
+
+    inputExplanation.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
+    });
+
   });
 
   document.querySelectorAll('.edit-btn').forEach((editButton) => {
@@ -277,6 +309,7 @@
     let inputExplanation = document.getElementById(`input-expl-${currentID}`);
     let currentWord = document.getElementById(`word-${currentID}`);
     let currentExplanation = document.getElementById(`expl-${currentID}`);
+
     editButton.addEventListener('click', (event) => {
       inputWord.value = currentWord.textContent;
       inputExplanation.value = currentExplanation.textContent.trim();
@@ -286,6 +319,7 @@
       currentWord.style.display = "none";
       currentExplanation.style.display = "none";
     });
+
     btnConfirm.addEventListener('click', (event) => {
       updateCard(inputWord.value, inputExplanation.value, currentID);
       currentWord.textContent = inputWord.value;
@@ -298,6 +332,7 @@
       currentWord.style.display = "block";
       currentExplanation.style.display = "block";
     });
+
     btnCancel.addEventListener('click', (event) => {
       inputWord.value = "";
       inputExplanation.value = "";
@@ -306,6 +341,20 @@
       inputForm.style.visibility = "hidden";
       currentWord.style.display = "block";
       currentExplanation.style.display = "block";
+    });
+
+    inputWord.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
+    });
+
+    inputExplanation.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        btnConfirm.click();
+      }
     });
   });
 
