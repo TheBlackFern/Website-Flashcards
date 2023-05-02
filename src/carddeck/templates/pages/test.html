@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="flex flex-col items-center my-3 gap-y-10">
-  <ul>
+<div class="flex flex-col items-center my-3 gap-y-10 gap-5">
+  <ul class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
     {% for card, bool in cards_rand %}
-    <li class="grid grid-flow-col relative gap-y-5 space-x-3 m-3">
+    <li class="grid grid-flow-col relative space-x-3 m-3">
       {% if bool %}
       <p class="w-24 text-right text-gray-300 text-xl">{{card.word}}</p>
       <p class="text-blue-200 text-xl">:</p>
@@ -41,7 +41,7 @@
 
 
 <script>
-  document.querySelectorAll('.input-info').forEach(function (input) {
+  document.querySelectorAll('.input-info').forEach((input) => {
     input.addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -50,24 +50,49 @@
     });
   });
 
+  function incrementCard(cardID) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", `/increment-card/${cardID}/`);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+    xhr.send();
+  }
+
+  function decrementCard(cardID) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", `/decrement-card/${cardID}/`);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+    xhr.send();
+  }
+
+  let combinedCardsRands = JSON.parse('{{ js_cards_rands|escapejs }}');
+  let isChecked = combinedCardsRands.reduce((obj, [card, _]) => {
+    obj[card.id] = false;
+    return obj;
+  }, {});
   function checkTest() {
-    let cards_rands = JSON.parse('{{ js_cards_rands|escapejs }}');
-    let elem_val, real_val;
-    for (let i = 0; i < cards_rands.length; i++) {
-      elem_val = document.getElementById(cards_rands[i][0].id).value;
-      if (elem_val === "") {
-        continue
+    combinedCardsRands.forEach(element => {
+      let card = element[0];
+      let isRight = element[1];
+      let inputValue = document.getElementById(card.id).value;
+      if (inputValue === "") {
+        return;
       }
-      if (cards_rands[i][1] == true && elem_val === cards_rands[i][0].explanation ||
-        cards_rands[i][1] != true && elem_val === cards_rands[i][0].word) {
-        document.getElementById(`tick-${cards_rands[i][0].id}`).style.visibility = "visible";
-        document.getElementById(`cross-${cards_rands[i][0].id}`).style.visibility = "hidden";
+      if (isRight && inputValue === card.explanation || !isRight && inputValue === card.word) {
+        if (!isChecked[card.id]) {
+          isChecked[card.id] = true;
+          incrementCard(card.id);
+        }
+        document.getElementById(`tick-${card.id}`).style.visibility = "visible";
+        document.getElementById(`cross-${card.id}`).style.visibility = "hidden";
       } else {
-        document.getElementById(`tick-${cards_rands[i][0].id}`).style.visibility = "hidden";
-        document.getElementById(`cross-${cards_rands[i][0].id}`).style.visibility = "visible";
+        if (!isChecked[card.id]) {
+          isChecked[card.id] = true;
+          decrementCard(card.id);
+        }
+        document.getElementById(`tick-${card.id}`).style.visibility = "hidden";
+        document.getElementById(`cross-${card.id}`).style.visibility = "visible";
       }
-    }
+    });
   }
 </script>
-
 {% endblock %}

@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "concurrently --kill-others \"tailwindcss -i src/static/tw/tailwind-input.css -o src/static/css/output.css --watch\" \"poetry run python src/manage.py runserver\""
+		}
+	]
+}

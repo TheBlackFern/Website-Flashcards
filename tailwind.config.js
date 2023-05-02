@@ -9,13 +9,33 @@ function generateGridColumns(lastValue) {
 
 module.exports = {
   mode: "jit",
-  content: ["./src/**/*.{html,js}"],
+  content: [
+    "./src/**/*.html",
+    "./src/**/*.js",
+  ],
+  safelist: [
+    'border-amber-300',
+    'dark:border-amber-700',
+    'border-blue-500',
+    'dark:border-teal-600',
+    'border-fuchsia-600',
+    'dark:border-fuchsia-800',
+    'border-gray-200',
+    'dark:border-gray-700',
+    'shadow-inner',
+    'shadow-lg',
+    'shadow-sm',
+    'shadow-fuchsia-800',
+    'shadow-teal-600',
+    '-translate-y-1/2',
+    'translate',
+  ],
   theme: {
     extend: {
       display: ["group-hover"],
       gridTemplateColumns: {
         ...generateGridColumns(6)
-      }
+      },
     },
   },
   plugins: [

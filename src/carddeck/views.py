@@ -52,6 +52,20 @@ def add_card(request):
     return JsonResponse(response)
 
 @csrf_exempt
+def increment_card(request, card_id):
+    card = Card.objects.get(id=card_id)
+    card.level += 2
+    card.save()
+    return JsonResponse({'status': 'ok'})
+
+@csrf_exempt
+def decrement_card(request, card_id):
+    card = Card.objects.get(id=card_id)
+    card.level -= 1
+    card.save()
+    return JsonResponse({'status': 'ok'})
+
+@csrf_exempt
 def update_card(request):
     word = request.POST.get("word")
     explanation = request.POST.get("explanation")

@@ -11,7 +11,8 @@
   {% for group, cards in groups_cards %}
   <h1 class="font-bold text-xl my-4 text-gray-400">"{{group}}" group:</h1>
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-3 gap-y-3">
-    <div id="div-{{ group.id }}" class="card relative grid place-content-center">
+    <div id="div-{{ group.id }}"
+      class="card relative grid place-content-center bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
       <button id="plus-{{ group.id }}" class="add-card visible">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white"
           class="w-12 h-12">
@@ -38,7 +39,7 @@
       </div>
     </div>
     {% for card in cards %}
-    <div id="{{ card.id }}" class="card relative group grid-row-3">
+    <div id="{{ card.id }}" class="card {{ card.get_color_palette }} relative group grid-row-3">
       <p id="word-{{ card.id }}" class="text-center mt-3 p-3 text-2xl font-bold tracking-tight text-gray-900
           dark:text-white">{{card.word}}</p>
       <p id="expl-{{ card.id }}"
@@ -83,35 +84,35 @@
 </div>
 
 <script>
-  function deleteCard(card_id) {
+  function deleteCard(cardID) {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", `/delete-card/${card_id}/`);
+    xhr.open("POST", `/delete-card/${cardID}/`);
     xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
     xhr.send();
   }
 
-  function updateCard(word, explanation, card_id) {
+  function updateCard(word, explanation, cardID) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "/update_card/");
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&card_id=${encodeURIComponent(card_id)}`);
+    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&card_id=${encodeURIComponent(cardID)}`);
   }
 
-  function createCard(word, explanation, group_id) {
+  function createCard(word, explanation, groupID) {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", '/new_card/');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = () => {
       let response = JSON.parse(xhr.responseText);
-      let addCardDiv = document.getElementById(`div-${group_id}`);
+      let addCardDiv = document.getElementById(`div-${groupID}`);
       console.log(response.id)
       let newCardDiv = createCardDIV(word, explanation, response.id);
       addCardDiv.after(newCardDiv);
     }
-    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&group_id=${encodeURIComponent(group_id)}`);
+    xhr.send(`word=${encodeURIComponent(word)}&explanation=${encodeURIComponent(explanation)}&group_id=${encodeURIComponent(groupID)}`);
   }
 
-  function createCardDIV(word, explanation, card_id) {
+  function createCardDIV(word, explanation, cardID) {
     let mainDiv = document.createElement("div");
     let inputForm = document.createElement("div");
     let btnEdit = document.createElement("button");
@@ -124,32 +125,32 @@
     let inputExplanation = document.createElement("textarea");
 
     mainDiv.className = 'card relative group grid-row-3';
-    mainDiv.id = card_id;
+    mainDiv.id = cardID;
 
     currentWord.className = "text-center mt-3 p-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white";
-    currentWord.id = `word-${card_id}`;
+    currentWord.id = `word-${cardID}`;
     currentWord.textContent = word;
 
     currentExplanation.className = "text-center line-clamp-3 break-words px-3 font-normal text-gray-700 dark:text-gray-400";
-    currentExplanation.id = `expl-${card_id}`;
+    currentExplanation.id = `expl-${cardID}`;
     currentExplanation.textContent = explanation;
 
     inputForm.className = "absolute invisible";
-    inputForm.id = `form-${card_id}`;
+    inputForm.id = `form-${cardID}`;
 
     inputWord.className = "absolute top-6 left-10 input-info text-2xl w-20";
     inputWord.placeholder = "Word";
-    inputWord.id = `input-word-${card_id}`;
+    inputWord.id = `input-word-${cardID}`;
 
     inputExplanation.className = "absolute mb-6 mt-2 top-16 left-4 left input-info w-32";
     inputExplanation.rows = "3";
-    inputExplanation.id = `input-expl-${card_id}`;
+    inputExplanation.id = `input-expl-${cardID}`;
 
     inputForm.appendChild(inputWord);
     inputForm.appendChild(inputExplanation);
 
     btnEdit.className = 'absolute top-2 left-2 invisible group-hover:visible text-white'
-    btnEdit.id = `edit-${card_id}`;
+    btnEdit.id = `edit-${cardID}`;
     btnEdit.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" \
           stroke="currentColor" class="w-6 h-6"> \
           <path stroke-linecap="round" stroke-linejoin="round" \
@@ -164,14 +165,14 @@
       </svg>`;
 
     btnConfirm.className = 'absolute top-2 left-2 invisible dark:bg-gray-800 text-white'
-    btnConfirm.id = `conf-${card_id}`;
+    btnConfirm.id = `conf-${cardID}`;
     btnConfirm.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" \
           class="w-6 h-6"> \
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /> \
         </svg>`;
 
     btnCancel.className = 'absolute top-2 right-2 invisible dark:bg-gray-800 text-white'
-    btnCancel.id = `cncl-${card_id}`;
+    btnCancel.id = `cncl-${cardID}`;
     btnCancel.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" \
           stroke="currentColor" class="w-6 h-6"> \
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /> \
@@ -181,7 +182,7 @@
     btnDelete.addEventListener('click', (event) => {
       mainDiv.remove();
       let xhr = new XMLHttpRequest();
-      xhr.open("POST", `/delete-card/${card_id}/`);
+      xhr.open("POST", `/delete-card/${cardID}/`);
       xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
       xhr.send();
     });
@@ -198,7 +199,7 @@
 
 
     btnConfirm.addEventListener('click', (event) => {
-      updateCard(inputWord.value, inputExplanation.value, card_id);
+      updateCard(inputWord.value, inputExplanation.value, cardID);
       currentWord.textContent = inputWord.value;
       currentExplanation.textContent = inputExplanation.value;
       inputWord.value = "";
