@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div action="new_card" class="my-5 flex flex-col items-center space-y-4">
-  <a href="{% url 'groups' %}" class="btn w-40 px-5 py-2.5">
-    Edit Groups
-  </a>
-</div>
-
 <div class="grid justify-center mb-10">
   {% for group, cards in groups_cards %}
   <h1 class="font-bold text-xl my-4 text-gray-400">"{{group}}" group:</h1>
@@ -51,14 +45,15 @@
         <textarea id="input-expl-{{ card.id }}" rows="3" class="absolute mb-6 mt-2 top-16 left-4 left input-info w-32"
           placeholder="Explanation" required></textarea>
       </div>
-      <button id="edit-{{ card.id }}" class="edit-btn absolute top-2 left-2 invisible group-hover:visible text-white">
+      <button id="edit-{{ card.id }}"
+        class="edit-btn absolute top-2 left-2 scale-0 group-hover:scale-100 text-white transition-all">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
         </svg>
       </button>
-      <button class="remove-btn absolute top-2 right-2 invisible group-hover:visible text-white">
+      <button class="remove-btn absolute top-2 right-2 scale-0 group-hover:scale-100 text-white transition-all">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round"

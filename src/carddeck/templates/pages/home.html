@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid grid-flow-col space-x-20 justify-start m-28">
+
+  <div class="flex flex-row gap-10">
+    <div>
+      <p class="text-left text-gray-200 font-light text-3x">Legend:<br>
+        {{perc1}}: Bad Cards <br>
+        {{perc2}}: Okay Cards <br>
+        {{perc3}}: Good Cards <br>
+        {{perc4}}: Great Cards <br>
+      </p>
+    </div>
+    <div
+      style="background-image: conic-gradient(#4b5563 0, #4b5563 {{ percantages_1 }}, #b45309 0, #b45309 {{ percantages_2 }}, #0d9488 0, #0d9488 {{ percantages_3 }}, #86198f 0, #86198f 100%);"
+      class="w-96 h-96 shadow-xl rounded-full border-2 border-gray-900">
+    </div>
+  </div>
+  <div class="mx-20">
+    <h1 class="text-gray-200 font-light text-3xl">Hi!</h1>
+    <p class="text-gray-200 mt-5 font-light text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
+      veritatis
+      dicta quas consequuntur quia asperiores
+      nemo, labore repudiandae iure. Sint odio ipsam facere. Laborum doloremque quae, maxime voluptates eaque tempora!
+    </p>
+  </div>
+</div>
+{% endblock %}

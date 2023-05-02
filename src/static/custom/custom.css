@@ -5,3 +5,7 @@
 .shadow-mid {
     box-shadow: 0 0 5px rgb(13, 148, 136, 0.9), inset 0 0 2px rgb(13, 148, 136, 0.9);
   }
+
+.pie {
+  background-image: conic-gradient(orange 64%, blue 17%, black);
+}
