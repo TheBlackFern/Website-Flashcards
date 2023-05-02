@@ -4,13 +4,19 @@
 <div class="grid grid-flow-col space-x-20 justify-start m-28">
 
   <div class="flex flex-row gap-10">
-    <div>
-      <p class="text-left text-gray-200 font-light text-3x">Legend:<br>
-        {{perc1}}: Bad Cards <br>
-        {{perc2}}: Okay Cards <br>
-        {{perc3}}: Good Cards <br>
-        {{perc4}}: Great Cards <br>
-      </p>
+    <div class="h-36 grid grid-flow-row text-gray-200 font-light text-xl">
+      <div class="flex flex-row space-x-3"><span class="text-right">{{perc1}}</span>: <span class="text-left">Bad
+          Cards</span>
+      </div>
+      <div class="flex flex-row space-x-3"><span class="text-right">{{perc2}}</span>: <span class="text-left">Okay
+          Cards</span>
+      </div>
+      <div class="flex flex-row space-x-3"><span class="text-right">{{perc3}}</span>: <span class="text-left">Good
+          Cards</span>
+      </div>
+      <div class="flex flex-row space-x-3"><span class="text-right">{{perc4}}</span>: <span class="text-left">Great
+          Cards</span>
+      </div>
     </div>
     <div
       style="background-image: conic-gradient(#4b5563 0, #4b5563 {{ percantages_1 }}, #b45309 0, #b45309 {{ percantages_2 }}, #0d9488 0, #0d9488 {{ percantages_3 }}, #86198f 0, #86198f 100%);"

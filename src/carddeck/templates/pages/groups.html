@@ -44,7 +44,15 @@
 
 
 <script>
-  document.getElementById("btn-submit").addEventListener("click", (event) => {
+  let inputForm = document.getElementById("new_group_name");
+  const btnSubmit = document.getElementById("btn-submit");
+  inputForm.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      btnSubmit.click();
+    }
+  });
+  btnSubmit.addEventListener("click", (event) => {
     event.preventDefault();
     const xhr = new XMLHttpRequest();
     xhr.onload = () => {
@@ -59,7 +67,6 @@
     };
     xhr.open('POST', '/new_group/');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    let inputForm = document.getElementById("new_group_name");
     xhr.send(`group_name=${encodeURIComponent(inputForm.value)}`);
   });
 
